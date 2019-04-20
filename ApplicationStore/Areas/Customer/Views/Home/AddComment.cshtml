@@ -1,0 +1,43 @@
+﻿@model ApplicationStore.Models.ViewModels.CommentViewModel
+
+@{
+    ViewData["Title"] = "AddComment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>AddComment</h2>
+
+<h4>ApplicationPublish</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddComment">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ApplicationPublish.Id" />
+            <input type="hidden" asp-for="ApplicationStoreUser.Id" />
+            <div class="form-group">
+                <label asp-for="ApplicationPublish.Application.Title" class="control-label"></label>
+                <input asp-for="ApplicationPublish.Application.Title" class="form-control" readonly/>
+                <span asp-validation-for="ApplicationPublish.Application.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationPublish.Version" class="control-label"></label>
+                <input asp-for="ApplicationPublish.Version" class="form-control" readonly/>
+                <span asp-validation-for="ApplicationPublish.Version" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comment.Text" class="control-label"></label>
+                <input asp-for="Comment.Text" class="form-control" />
+                <span asp-validation-for="Comment.Text" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

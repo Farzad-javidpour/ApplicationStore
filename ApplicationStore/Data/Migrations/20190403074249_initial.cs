@@ -153,6 +153,7 @@ namespace ApplicationStore.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Text = table.Column<string>(maxLength: 100, nullable: false),
+                    RegisterDate = table.Column<DateTime>(nullable: false),
                     ApplicationPublishId = table.Column<int>(nullable: false),
                     ApplicationStoreUserId = table.Column<string>(nullable: false)
                 },

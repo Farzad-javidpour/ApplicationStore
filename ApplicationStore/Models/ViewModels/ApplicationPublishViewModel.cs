@@ -13,6 +13,7 @@ namespace ApplicationStore.Models.ViewModels
         public ApplicationPublish ApplicationPublish { get; set; }
         public IEnumerable<Application> Applications { get; set; }
         public IEnumerable<Platform> Platforms { get; set; }
+        public IEnumerable<Comment> Comments { get; set; }
 
         public string RegisterDateShamsi { get; set; }
         public string PublishDateShamsi { get; set; }

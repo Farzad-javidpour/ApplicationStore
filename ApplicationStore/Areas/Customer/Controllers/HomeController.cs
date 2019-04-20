@@ -8,6 +8,8 @@ using ApplicationStore.Models.ViewModels;
 using ApplicationStore.Data;
 using Microsoft.EntityFrameworkCore;
 using ApplicationStore.Models;
+using ApplicationStore.Utility;
+using Microsoft.AspNetCore.Routing;
 
 namespace ApplicationStore.Controllers
 {
@@ -19,6 +21,9 @@ namespace ApplicationStore.Controllers
         [BindProperty]
         public ApplicationPublishViewModel ApplicationPublishVM { get; set; }
 
+        [BindProperty]
+        public CommentViewModel CommentVM { get; set; }
+
         public HomeController(ApplicationDbContext context)
         {
             _context = context;
@@ -28,6 +33,13 @@ namespace ApplicationStore.Controllers
                 ApplicationPublish = new ApplicationPublish(),
                 Applications = _context.Applications.ToList(),
                 Platforms = _context.Platforms.ToList()
+            };
+
+            CommentVM = new CommentViewModel()
+            {
+                Comment = new Comment(),
+                ApplicationPublish = new ApplicationPublish(),
+                ApplicationStoreUser = new ApplicationStoreUser()
             };
         }
 
@@ -66,12 +78,70 @@ namespace ApplicationStore.Controllers
             }
 
             ApplicationPublishVM.ApplicationPublish = applicationPublish;
+            ApplicationPublishVM.Comments = _context.Comments
+                .Where(c => c.ApplicationPublishId == ApplicationPublishVM.ApplicationPublish.Id)
+                .Include(c=>c.ApplicationStoreUser);
+
             ApplicationPublishVM.RegisterDateShamsi = Persia.Calendar.ConvertToPersian(applicationPublish.RegisterDate).ToString();
             ApplicationPublishVM.PublishDateShamsi = Persia.Calendar.ConvertToPersian(applicationPublish.PublishDate).ToString();
-            ApplicationPublishVM.PictureUrl = Utility.Tools.GetImageUrlFromByteArray(_context.ApplicationPictures.FirstOrDefault(p => p.ApplicationPublishId == applicationPublish.Id).Data);
+            ApplicationPublishVM.PictureUrl = Tools.GetImageUrlFromByteArray(_context.ApplicationPictures.FirstOrDefault(p => p.ApplicationPublishId == applicationPublish.Id).Data);
 
             return View(ApplicationPublishVM);
         }
+
+        //________________________________________________________________________________
+        public async Task<IActionResult> AddComment(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.UserId = Tools.GetCurrenyUserId(User);
+
+            CommentVM.ApplicationPublish = await _context.ApplicationPublishs
+               .Include(m => m.Application)
+               .Include(m => m.ApplicationStoreUser)
+               .Include(m => m.Platform)
+               .SingleOrDefaultAsync(m => m.Id == id);
+
+            CommentVM.ApplicationStoreUser = await _context.ApplicationStoreUsers
+               .SingleOrDefaultAsync(m => m.Id == Tools.GetCurrenyUserId(User));
+
+            if (CommentVM.ApplicationPublish == null)
+            {
+                return NotFound();
+            }
+            return View(CommentVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddComment(int id, [Bind] CommentViewModel commentViewModel)
+        {
+                try
+                {
+                    var comment = new Comment()
+                    {
+                        Text = commentViewModel.Comment.Text,
+                        RegisterDate = DateTime.Now,
+                        ApplicationPublishId = commentViewModel.ApplicationPublish.Id,
+                        ApplicationStoreUserId = commentViewModel.ApplicationStoreUser.Id
+                    };
+
+                    _context.Comments.Add(comment);
+
+                    await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Details), new RouteValueDictionary(
+                                        new { controller = "Home", action = nameof(Details), Id = comment.ApplicationPublishId }));
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return NotFound();
+                }
+        }
+        //________________________________________________________________________________
 
         public IActionResult About()
         {

@@ -16,7 +16,12 @@ namespace ApplicationStore.Models
         [Display(Name = "Text", ResourceType = typeof(StringDictionary.Model))]
         [Required(ErrorMessageResourceName = "Text", ErrorMessageResourceType = typeof(StringDictionary.Model))]
         [MaxLength(100)]
+        //________________________________________________________________________________
         public string Text { get; set; }
+        [Display(Name = "RegisterDate", ResourceType = typeof(StringDictionary.Model))]
+        [Required()]
+        [DataType(DataType.Date)]
+        public DateTime RegisterDate { get; set; }
         //________________________________________________________________________________
         [Display(Name = "ApplicationPublishId", ResourceType = typeof(StringDictionary.Model))]
         [Required()]

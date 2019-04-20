@@ -12,15 +12,15 @@
         <form method="post">
             <div class="form-group">
                 <label asp-for="ApplicationPublish.ApplicationId" class="control-label"></label>
-                <input asp-for="ApplicationPublish.Application.Title" class="form-control" readonly/>
+                <input asp-for="ApplicationPublish.Application.Title" class="form-control" readonly />
             </div>
             <div class="form-group">
                 <label asp-for="ApplicationPublish.Version" class="control-label"></label>
-                <input asp-for="ApplicationPublish.Version" class="form-control"  readonly/>
+                <input asp-for="ApplicationPublish.Version" class="form-control" readonly />
             </div>
             <div class="form-group">
                 <label asp-for="ApplicationPublish.PublishDate" class="control-label"></label>
-                <input asp-for="PublishDateShamsi" class="form-control" readonly/>
+                <input asp-for="PublishDateShamsi" class="form-control" readonly />
             </div>
             <div class="form-group">
                 <label asp-for="ApplicationPublish.RegisterDate" class="control-label"></label>
@@ -28,30 +28,63 @@
             </div>
             <div class="form-group">
                 <label asp-for="ApplicationPublish.ChangeList" class="control-label"></label>
-                <input asp-for="ApplicationPublish.ChangeList" class="form-control" readonly/>
+                <input asp-for="ApplicationPublish.ChangeList" class="form-control" readonly />
             </div>
             <div class="form-group">
                 <label asp-for="ApplicationPublish.Price" class="control-label"></label>
-                <input asp-for="ApplicationPublish.Price" class="form-control" readonly/>
+                <input asp-for="ApplicationPublish.Price" class="form-control" readonly />
             </div>
             <div class="form-group">
                 <label asp-for="ApplicationPublish.Size" class="control-label"></label>
-                <input asp-for="ApplicationPublish.Size" class="form-control" readonly/>
+                <input asp-for="ApplicationPublish.Size" class="form-control" readonly />
             </div>
             <div class="form-group">
                 <label asp-for="ApplicationPublish.PlatformId" class="control-label"></label>
-                <input asp-for="ApplicationPublish.Platform.Title" class="form-control" readonly/>
+                <input asp-for="ApplicationPublish.Platform.Title" class="form-control" readonly />
             </div>
 
             @*<div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>*@
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>*@
         </form>
     </div>
     <div class="col-4">
-        <img class="card-img-top"  src="@Model.PictureUrl" alt="App Image" />
+        <img class="card-img-top" src="@Model.PictureUrl" alt="App Image" />
     </div>
 </div>
+
+<div>
+    <a asp-action="AddComment" asp-controller="Home" asp-route-id="@Model.ApplicationPublish.Id">Add Comment</a>
+</div>
+
 <div>
     <a asp-action="Index">Back to List</a>
+</div>
+
+<div>
+    <table class="table table-striped border">
+        <thead class="table-info text-center">
+            <tr>
+                <th>کاربر</th>
+                <th>متن کامنت</th>
+                <th>زمان</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Comments)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationStoreUser.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Text)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegisterDate)
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
 </div>
