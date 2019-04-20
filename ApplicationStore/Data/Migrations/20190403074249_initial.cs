@@ -254,6 +254,20 @@ namespace ApplicationStore.Data.Migrations
                 column: "ApplicationStoreUserId");
 
             migrationBuilder.CreateIndex(
+                name: "ApplicationCategoryCodeIndex",
+                table: "ApplicationCategories",
+                column: "Code",
+                unique: true,
+                filter: "[Code] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "ApplicationCategoryTitleIndex",
+                table: "ApplicationCategories",
+                column: "Title",
+                unique: true,
+                filter: "[Title] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ApplicationPictures_ApplicationPublishId",
                 table: "ApplicationPictures",
                 column: "ApplicationPublishId");
@@ -282,7 +296,21 @@ namespace ApplicationStore.Data.Migrations
                 name: "IX_Applications_ApplicationStoreUserId",
                 table: "Applications",
                 column: "ApplicationStoreUserId");
-            
+
+            migrationBuilder.CreateIndex(
+                name: "ApplicationCodeIndex",
+                table: "Applications",
+                column: "Code",
+                unique: true,
+                filter: "[Code] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "ApplicationTitleIndex",
+                table: "Applications",
+                column: "Title",
+                unique: true,
+                filter: "[Title] IS NOT NULL");
+
             migrationBuilder.CreateIndex(
                 name: "IX_CommentLikes_CommentId",
                 table: "CommentLikes",
@@ -322,6 +350,13 @@ namespace ApplicationStore.Data.Migrations
                 name: "IX_Platforms_ApplicationStoreUserId",
                 table: "Platforms",
                 column: "ApplicationStoreUserId");
+
+            migrationBuilder.CreateIndex(
+               name: "PlatformTitleIndex",
+               table: "Platforms",
+               column: "Title",
+               unique: true,
+               filter: "[Title] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
