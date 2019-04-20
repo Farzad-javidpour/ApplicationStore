@@ -31,7 +31,7 @@
                 <li class="nav-item"><a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">خانه</a></li>
 
 
-                @if (User.IsInRole("Super Admin"))
+                @if (User.IsInRole(@ApplicationStore.Utility.StaticInfo.SuperAdminUser))
                 {
                     <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="Platforms" asp-action="Index">پلتفرم</a></li>
                     <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="ApplicationCategories" asp-action="Index">گروه نرم افزار</a></li>
