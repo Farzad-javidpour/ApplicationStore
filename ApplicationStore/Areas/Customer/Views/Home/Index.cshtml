@@ -1,0 +1,28 @@
+﻿@model List<ApplicationStore.Models.ViewModels.ApplicationPublishViewModel>
+
+<div class="mt-4">
+    <div class="row">
+        @foreach (var appPublish in Model)
+        {
+            <div class="col-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">
+                            <label style="font-size:23px;color:steelblue;">@appPublish.ApplicationPublish.Application.Title &nbsp; @appPublish.ApplicationPublish.Version</label>
+                        </h4>
+                    </div>
+
+                    <img class="card-img-top" style="height:100%;" src="@appPublish.PictureUrl" alt="App Image" />
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <label style="font-size:20px; color:#a51313"><b>@appPublish.ApplicationPublish.Price ریال</b></label>
+                            </div>
+                            <a asp-action="Details" asp-controller="Home" class="btn btn-success fa-pull-right btn-outline-info" asp-route-id="@appPublish.ApplicationPublish.Id">مشاهده جزئیات</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

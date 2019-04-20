@@ -1,0 +1,72 @@
+﻿@model IEnumerable<ApplicationStore.Models.ViewModels.ApplicationViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-striped border">
+    <thead class="table-info text-center">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Application.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application.RegisterDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application.ApplicationCategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application.ApplicationStoreUserId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Application.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Application.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegisterDateShamsi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Application.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Application.ApplicationCategory.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Application.ApplicationStoreUser.FirstName)&nbsp;@Html.DisplayFor(modelItem => item.Application.ApplicationStoreUser.LastName)
+            </td>
+            @if (item.Application.State == ApplicationStore.Models.ViewModels.RowStateEnum.Active)
+            {
+                <td>
+                    <partial name="_TableButtonPartial" model="item.Application.Id" />
+                </td>
+            }
+            else
+            {
+                <td>
+                    Deleted
+                </td>
+            }
+        </tr>
+}
+    </tbody>
+</table>

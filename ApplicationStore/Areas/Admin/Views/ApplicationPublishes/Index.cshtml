@@ -1,0 +1,82 @@
+﻿@model IEnumerable<ApplicationStore.Models.ViewModels.ApplicationPublishViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-striped border">
+    <thead class="table-info text-center">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationPublish.ApplicationId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationPublish.Version)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationPublish.PublishDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationPublish.RegisterDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationPublish.ChangeList)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationPublish.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationPublish.Size)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationPublish.PlatformId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationPublish.ApplicationStoreUserId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationPublish.Application.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationPublish.Version)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublishDateShamsi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegisterDateShamsi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationPublish.ChangeList)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationPublish.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationPublish.Size)MB
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationPublish.Platform.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationPublish.ApplicationStoreUser.FirstName)&nbsp;@Html.DisplayFor(modelItem => item.ApplicationPublish.ApplicationStoreUser.LastName)
+                </td>
+                <td>
+                    <partial name="_TableButtonPartial" model="item.ApplicationPublish.Id" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

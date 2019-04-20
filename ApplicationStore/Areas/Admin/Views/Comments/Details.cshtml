@@ -1,0 +1,36 @@
+﻿@model ApplicationStore.Models.Comment
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Comment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Text)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationPublish)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationPublish)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationStoreUser.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationStoreUser.Email)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,72 @@
+﻿@model ApplicationStore.Models.ViewModels.ApplicationPublishViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ApplicationPublish</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationPublish.Version)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationPublish.Version)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationPublish.PublishDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PublishDateShamsi)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationPublish.RegisterDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RegisterDateShamsi)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationPublish.ChangeList)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationPublish.ChangeList)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationPublish.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationPublish.Price)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationPublish.Size)<p>MB</p>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationPublish.Size)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationPublish.PlatformId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationPublish.Platform.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationPublish.ApplicationId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationPublish.Application.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationPublish.ApplicationStoreUserId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationPublish.ApplicationStoreUser.FirstName)&nbsp;@Html.DisplayFor(model => model.ApplicationPublish.ApplicationStoreUser.LastName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ApplicationPublish.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

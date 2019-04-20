@@ -1,0 +1,54 @@
+﻿@model ApplicationStore.Models.ViewModels.ApplicationViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Application</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Application.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Application.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Application.Code)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Application.Code)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Application.RegisterDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RegisterDateShamsi)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Application.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Application.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Application.ApplicationCategoryId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Application.ApplicationCategory.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Application.ApplicationStoreUserId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Application.ApplicationStoreUser.FirstName)&nbsp;@Html.DisplayFor(model => model.Application.ApplicationStoreUser.LastName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Application.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

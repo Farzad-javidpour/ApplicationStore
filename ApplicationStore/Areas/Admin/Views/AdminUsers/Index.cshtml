@@ -1,0 +1,77 @@
+﻿@using ApplicationStore.Models.ViewModels;
+@model IEnumerable<ApplicationStore.Models.ApplicationStoreUser>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Admin User List</h2>
+
+<p>
+    <a asp-area="Identity" asp-page="/Account/Register">Register New</a>
+</p>
+<table class="table table-striped border">
+    <thead class="table-info text-center">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MemberType)
+            </th>
+            <th>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                 @*@(Html.GetEnumSelectList<ApplicationStore.Models.ViewModels.MemberTypeEnum>().FirstOrDefault(a=>a.Value == item.MemberType.ToString()))"*@
+                @((MemberTypeEnum)item.MemberType)
+            </td>
+            <td>
+                @if (item.LockoutEnd != null && item.LockoutEnd > DateTime.Now)
+                {
+                    <lable>Disabled</lable>
+                }
+            </td>
+            <td>
+                @if ((item.LockoutEnd == null || item.LockoutEnd < DateTime.Now) && (item.Email != "admin@gmail.com"))
+                {
+                    <a type="button" href="@Url.Action("Edit/" + item.Id)">
+                        Edit
+                    </a>
+                    <a type="button" href="@Url.Action("Delete/" + item.Id)">
+                        Delete
+                    </a>
+                }
+            </td>
+            <td></td>
+        </tr>
+        }
+    </tbody>
+</table>

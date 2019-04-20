@@ -1,0 +1,39 @@
+﻿@model ApplicationStore.Models.Comment
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Comment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Text)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationPublish)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationPublish)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationStoreUser.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationStoreUser.Email)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

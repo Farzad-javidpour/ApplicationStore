@@ -1,0 +1,46 @@
+﻿@using ApplicationStore.Utility.Extensions;
+@model ApplicationStore.Models.ViewModels.ApplicationViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Application</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Application.ApplicationStoreUserId" value="@ViewBag.UserId" />
+            <div class="form-group">
+                <label asp-for="Application.Title" class="control-label"></label>
+                <input asp-for="Application.Title" class="form-control" />
+                <span asp-validation-for="Application.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Application.Code" class="control-label"></label>
+                <input asp-for="Application.Code" class="form-control" />
+                <span asp-validation-for="Application.Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Application.Description" class="control-label"></label>
+                <input asp-for="Application.Description" class="form-control" />
+                <span asp-validation-for="Application.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Application.ApplicationCategoryId" class="control-label"></label>
+                <select asp-for="Application.ApplicationCategoryId" class="form-control" asp-items="Model.ApplicationCategories.ToSelectListItems(Model.Application.ApplicationCategoryId)"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

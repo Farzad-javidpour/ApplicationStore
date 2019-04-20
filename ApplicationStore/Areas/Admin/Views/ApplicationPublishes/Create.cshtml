@@ -1,0 +1,96 @@
+﻿@using ApplicationStore.Utility.Extensions;
+@model ApplicationStore.Models.ViewModels.ApplicationPublishViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@*Added for DatePicker*@
+<script src="~/js/jquery-1.10.2.js"></script>
+<script src="~/js/jquery.fileupload.js"></script>
+<script src="~/js/kamadatepicker.js"></script>
+<link href="~/css/kamadatepicker.css" rel="stylesheet" />
+
+
+<h2>Create</h2>
+
+<h4>ApplicationPublish</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ApplicationPublish.ApplicationStoreUserId" value="@ViewBag.UserId" />
+            <div class="form-group">
+                <label asp-for="Applications" class="control-label"></label>
+                <select asp-for="ApplicationPublish.ApplicationId" asp-items="Model.Applications.ToSelectListItems(Model.ApplicationPublish.ApplicationId)" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationPublish.Version" class="control-label"></label>
+                <input asp-for="ApplicationPublish.Version" class="form-control" />
+                <span asp-validation-for="ApplicationPublish.Version" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationPublish.PublishDate" class="control-label"></label>
+                <input asp-for="ApplicationPublish.PublishDate" class="form-control" id="test-date-id" />
+                <span asp-validation-for="ApplicationPublish.PublishDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationPublish.ChangeList" class="control-label"></label>
+                <input asp-for="ApplicationPublish.ChangeList" class="form-control" />
+                <span asp-validation-for="ApplicationPublish.ChangeList" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationPublish.Price" class="control-label"></label>
+                <input asp-for="ApplicationPublish.Price" class="form-control" />
+                <span asp-validation-for="ApplicationPublish.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppLink" class="control-label"></label>
+                <input asp-for="AppLink" class="form-control" />
+                <span asp-validation-for="AppLink" class="text-danger"></span>
+            </div>
+            <div class="form-group ">
+                <label asp-for="AppPicture" class="control-label"></label>
+                <input asp-for="AppPicture" multiple id='fileUpload' name="files[]" data-url="@Url.Action("Upload","Home")" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Platforms" class="control-label"></label>
+                <select asp-for="ApplicationPublish.PlatformId" asp-items="Model.Platforms.ToSelectListItems(Model.ApplicationPublish.PlatformId)" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script>
+    $(function () {
+        $('#fileUpload').fileupload({
+            dataType: 'json',
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    $('<p/>').text(file.name).appendTo(document.body);
+                });
+            }
+        });
+
+    });
+    kamaDatepicker('test-date-id',
+        {
+            buttonsColor: "red",
+            forceFarsiDigits: true,
+            markToday: true,
+            sync: true,
+            gotoToday: true,
+            markHolidays: true,
+            previousButtonIcon: "/images/timeir_prev.png",
+            nextButtonIcon: "/images/timeir_next.png"
+        }
+    );
+</script>
