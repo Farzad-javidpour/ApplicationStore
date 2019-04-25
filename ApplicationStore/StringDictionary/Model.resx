@@ -138,6 +138,9 @@
   <data name="CommentId" xml:space="preserve">
     <value>نظرات</value>
   </data>
+  <data name="CommentState" xml:space="preserve">
+    <value>وضعیت کامنت</value>
+  </data>
   <data name="Count" xml:space="preserve">
     <value>تعداد</value>
   </data>

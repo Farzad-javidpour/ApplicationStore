@@ -14,6 +14,7 @@ namespace ApplicationStore.Models.ViewModels
         public IEnumerable<Application> Applications { get; set; }
         public IEnumerable<Platform> Platforms { get; set; }
         public IEnumerable<Comment> Comments { get; set; }
+        public IEnumerable<CommentLike> CommentLikes { get; set; }
 
         public string RegisterDateShamsi { get; set; }
         public string PublishDateShamsi { get; set; }

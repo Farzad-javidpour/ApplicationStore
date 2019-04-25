@@ -1,8 +1,8 @@
 ﻿@model ApplicationStore.Models.Comment
 
-@{
+@*@{
     ViewData["Title"] = "Edit";
-}
+}*@
 
 <h2>Edit</h2>
 
@@ -13,20 +13,25 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="RegisterDate" />
             <div class="form-group">
                 <label asp-for="Text" class="control-label"></label>
-                <input asp-for="Text" class="form-control" />
+                <input asp-for="Text" class="form-control" readonly />
                 <span asp-validation-for="Text" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ApplicationPublishId" class="control-label"></label>
-                <select asp-for="ApplicationPublishId" class="form-control" asp-items="ViewBag.ApplicationPublishId"></select>
+                <select asp-for="ApplicationPublishId" class="form-control" asp-items="ViewBag.ApplicationPublishId" readonly></select>
                 <span asp-validation-for="ApplicationPublishId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ApplicationStoreUserId" class="control-label"></label>
-                <select asp-for="ApplicationStoreUserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <select asp-for="ApplicationStoreUserId" class="form-control" asp-items="ViewBag.UserId" readonly></select>
                 <span asp-validation-for="ApplicationStoreUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CommentState"></label>
+                <select asp-for="CommentState" asp-items="Html.GetEnumSelectList<ApplicationStore.Models.ViewModels.CommentStateEnum>()" class="form-control"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />

@@ -6,9 +6,6 @@
 
 <h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -20,6 +17,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ApplicationStoreUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CommentState)
             </th>
             <th></th>
         </tr>
@@ -36,6 +36,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ApplicationStoreUser.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommentState)
             </td>
             <td>
                 <partial name="_TableButtonPartial" model="item.Id" />

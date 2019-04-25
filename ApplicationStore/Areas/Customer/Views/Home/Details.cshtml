@@ -68,6 +68,7 @@
                 <th>نام کاربر</th>
                 <th>متن کامنت</th>
                 <th>زمان</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -82,6 +83,12 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.RegisterDate)
+                </td>
+                <td>
+                    <a asp-action="LikeComment" asp-controller="Home" asp-route-id="@item.Id">Like @Model.CommentLikes.Count(c => c.CommentId == item.Id && c.IsLike)</a>
+                </td>
+                <td>
+                    <a asp-action="DisLikeComment" asp-controller="Home" asp-route-id="@item.Id">DisLike @Model.CommentLikes.Count(c => c.CommentId == item.Id && !c.IsLike)</a>
                 </td>
             </tr>
             }
