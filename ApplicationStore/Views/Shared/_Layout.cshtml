@@ -30,7 +30,6 @@
 
                 <li class="nav-item"><a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">خانه</a></li>
 
-
                 @if (User.IsInRole(@ApplicationStore.Utility.StaticInfo.SuperAdminUser))
                 {
                     <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="Platforms" asp-action="Index">پلتفرم</a></li>
@@ -39,7 +38,13 @@
                     <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="ApplicationPublishes" asp-action="Index">نسخه های نرم افزار</a></li>
                     <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="AdminUsers" asp-action="Index">کاربران</a></li>
                     <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="Comments" asp-action="Index">کامنت ها</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="FavoriteList"> علاقه مندی ها </a></li>
                 }
+                @if (User.IsInRole(@ApplicationStore.Utility.StaticInfo.MemberUser))
+                {
+                    <li class="nav-item"><a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="FavoriteList"> علاقه مندی ها </a></li>
+                }
+
             </ul>
 
             <ul class="navbar-nav mr-auto">

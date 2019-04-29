@@ -54,7 +54,13 @@ namespace ApplicationStore.Controllers
                         ApplicationPublish = item,
                         RegisterDateShamsi = Persia.Calendar.ConvertToPersian(item.RegisterDate).ToString(),
                         PublishDateShamsi = Persia.Calendar.ConvertToPersian(item.PublishDate).ToString(),
-                        PictureUrl = Utility.Tools.GetImageUrlFromByteArray(_context.ApplicationPictures.FirstOrDefault(p => p.ApplicationPublishId == item.Id).Data)
+                        PictureUrl = Utility.Tools.GetImageUrlFromByteArray(_context.ApplicationPictures.FirstOrDefault(p => p.ApplicationPublishId == item.Id).Data),
+                        ShowIcon = !string.IsNullOrEmpty(this.User.Identity.Name),
+                        IsFavorite = !string.IsNullOrEmpty(this.User.Identity.Name) ?
+                                    await _context.FavorieApplications
+                                     .AnyAsync(f => f.ApplicationPublishId == item.Id && f.ApplicationStoreUserId == Tools.GetCurrentUserId(User))
+                                     : false,
+
                     });
             }
 
@@ -210,6 +216,56 @@ namespace ApplicationStore.Controllers
                                         new { controller = "Home", action = nameof(Details), Id = comment.ApplicationPublishId }));
         }
         //________________________________________________________________________________
+
+        public async Task<IActionResult> Favorite(int id)
+        {
+            var favorite = new FavorieApplication();
+            favorite.ApplicationPublishId = id;
+            favorite.ApplicationStoreUserId = Tools.GetCurrentUserId(User);
+            favorite.RegisterDate = DateTime.Now.Date;
+            _context.FavorieApplications.Add(favorite);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+                                      
+        }
+
+        //________________________________________________________________________________
+
+        public async Task<IActionResult> RemoveFavorite(int id)
+        {
+            var favorite = await _context.FavorieApplications
+                .FirstOrDefaultAsync(c => c.ApplicationPublishId == id && c.ApplicationStoreUserId == Tools.GetCurrentUserId(User));
+           
+            _context.FavorieApplications.Remove(favorite);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        //________________________________________________________________________________
+        public async Task<IActionResult> FavoriteList()
+        {
+            var favoriteList = _context.FavorieApplications
+                .Where(c => c.ApplicationStoreUserId == Tools.GetCurrentUserId(User))
+                .Select(c=>c.ApplicationPublishId);
+            var applicationPublishVMList = new List<ApplicationPublishViewModel>();
+            foreach (var item in await _context.ApplicationPublishs.Where(p=>favoriteList.Contains(p.Id)).Include(m => m.Application).Include(m => m.Platform).ToListAsync())
+            {
+                applicationPublishVMList.Add(
+                    new ApplicationPublishViewModel()
+                    {
+                        ApplicationPublish = item,
+                        RegisterDateShamsi = Persia.Calendar.ConvertToPersian(item.RegisterDate).ToString(),
+                        PublishDateShamsi = Persia.Calendar.ConvertToPersian(item.PublishDate).ToString(),
+                        PictureUrl = Utility.Tools.GetImageUrlFromByteArray(_context.ApplicationPictures.FirstOrDefault(p => p.ApplicationPublishId == item.Id).Data),
+                        ShowIcon =true,
+                        IsFavorite =true
+
+                    });
+            }
+
+            return this.View(@"../Home/Index", applicationPublishVMList);
+        }
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";

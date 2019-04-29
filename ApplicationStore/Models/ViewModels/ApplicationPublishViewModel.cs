@@ -19,7 +19,8 @@ namespace ApplicationStore.Models.ViewModels
         public string RegisterDateShamsi { get; set; }
         public string PublishDateShamsi { get; set; }
         public string PictureUrl { get; set; }
-
+        public bool IsFavorite { get; set; }
+        public bool ShowIcon { get; set; }
         [Display(Name = "لینک فایل")]
         public IFormFile AppLink { get; set; }
         
