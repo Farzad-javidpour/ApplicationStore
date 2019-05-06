@@ -22,11 +22,11 @@
                             @if (appPublish.IsFavorite && appPublish.ShowIcon)
                             {
 
-                                <img src="~/images/disfavorite.jpg" onclick=RemoveFavorite(@appPublish.ApplicationPublish.Id) width="50px" height="30px"/>
+                                <img class="fas fa-heart fa-2x" style="color:teal" onclick=RemoveFavorite(@appPublish.ApplicationPublish.Id) width="50px" height="50px"/>
                             }
                             @if (!appPublish.IsFavorite && appPublish.ShowIcon)
                             {
-                                <img src="~/images/favorite.jpg" onclick=AddToFavorite(@appPublish.ApplicationPublish.Id) width="50px" height="30px" />
+                                <img class="fal fa-heart fa-2x" onclick=AddToFavorite(@appPublish.ApplicationPublish.Id) width="50px" height="50px" />
                             }
                         </div>
                     </div>

@@ -11,11 +11,6 @@
 <script src="~/js/kamadatepicker.js"></script>
 <link href="~/css/kamadatepicker.css" rel="stylesheet" />
 
-
-<h2>Create</h2>
-
-<h4>ApplicationPublish</h4>
-<hr />
 <div class="row">
     <div class="col-md-6">
         <form asp-action="Create" enctype="multipart/form-data" method="post">
@@ -59,14 +54,14 @@
                 <select asp-for="ApplicationPublish.PlatformId" asp-items="Model.Platforms.ToSelectListItems(Model.ApplicationPublish.PlatformId)" class="form-control"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn-outline-secondary"><i class="far fa-chevron-right"></i>&nbsp;بازگشت</a>
 </div>
 
 <script>

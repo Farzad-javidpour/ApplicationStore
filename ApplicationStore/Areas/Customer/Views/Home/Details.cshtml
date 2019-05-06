@@ -5,9 +5,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h2 class="text-info">Details</h2>
-
-<div class="row col-12">
+<div class="row col-12 p-2">
     <div class="col-8">
         <form method="post">
             <div class="form-group">
@@ -54,16 +52,16 @@
 </div>
 
 <div>
-    <a asp-action="AddComment" asp-controller="Home" asp-route-id="@Model.ApplicationPublish.Id">Add Comment</a>
+    <a asp-action="Index" class="btn-outline-secondary"><i class="far fa-chevron-right"></i>&nbsp;بازگشت</a>
+</div>
+<hr />
+<div>
+    <a asp-action="AddComment" asp-controller="Home" asp-route-id="@Model.ApplicationPublish.Id" class="align-self-md-center"><i class="fal fa-comment-alt-plus fa-3x"></i></a>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-<div>
-    <table class="table table-striped border">
-        <thead class="table-info text-center">
+    <table class="table table-striped table-hover border">
+        <thead class="table-info ">
             <tr>
                 <th>نام کاربر</th>
                 <th>متن کامنت</th>
@@ -74,23 +72,23 @@
         <tbody>
             @foreach (var item in Model.Comments)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ApplicationStoreUser.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Text)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RegisterDate)
-                </td>
-                <td>
-                    <a asp-action="LikeComment" asp-controller="Home" asp-route-id="@item.Id">Like @Model.CommentLikes.Count(c => c.CommentId == item.Id && c.IsLike)</a>
-                </td>
-                <td>
-                    <a asp-action="DisLikeComment" asp-controller="Home" asp-route-id="@item.Id">DisLike @Model.CommentLikes.Count(c => c.CommentId == item.Id && !c.IsLike)</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApplicationStoreUser.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Text)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RegisterDate)
+                    </td>
+                    <td>
+                        <a asp-action="LikeComment" asp-controller="Home" asp-route-id="@item.Id"><i class="far fa-thumbs-up fa-2x"></i> @Model.CommentLikes.Count(c => c.CommentId == item.Id && c.IsLike)</a>
+                    </td>
+                    <td>
+                        <a asp-action="DisLikeComment" asp-controller="Home" asp-route-id="@item.Id"><i class="far fa-thumbs-down fa-2x"></i> @Model.CommentLikes.Count(c => c.CommentId == item.Id && !c.IsLike)</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

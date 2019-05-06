@@ -4,13 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2 class="text-primary p-md-3">لیست گروه نرم افزارها</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">افزودن گروه جدید&nbsp;<i class="fal fa-plus-square"></i></a>
 </p>
-<table class="table table-striped border">
-    <thead class="table-info text-center">
+<table class="table table-striped table-hover border">
+    <thead class="table-info">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
@@ -51,7 +51,7 @@
             else
             {
                 <td>
-                    Deleted
+                    <i class="far fa-comment-times"></i>
                 </td>
             }
         </tr>
