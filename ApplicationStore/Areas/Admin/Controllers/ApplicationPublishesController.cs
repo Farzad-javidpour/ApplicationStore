@@ -87,7 +87,7 @@ namespace ApplicationStore.Areas.Admin.Controllers
         //________________________________________________________________________________
         public IActionResult Create()
         {
-            ViewBag.UserId = Tools.GetCurrenyUserId(User);
+            ViewBag.UserId = Tools.GetCurrentUserId(User);
             ApplicationPublishVM.ApplicationPublish.PublishDate = DateTime.Now.Date;
 
             return View(ApplicationPublishVM);
@@ -176,7 +176,7 @@ namespace ApplicationStore.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            ViewBag.UserId = Tools.GetCurrenyUserId(User);
+            ViewBag.UserId = Tools.GetCurrentUserId(User);
             ApplicationPublishVM.ApplicationPublish = await _context.ApplicationPublishs.Include(m => m.Application)
                                                                                         .Include(m => m.Platform)
                                                                                         .Include(m => m.ApplicationStoreUser)

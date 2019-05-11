@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ApplicationStore.Models.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,6 +23,10 @@ namespace ApplicationStore.Models
         [Required()]
         [DataType(DataType.Date)]
         public DateTime RegisterDate { get; set; }
+        //________________________________________________________________________________
+        [Display(Name = "CommentState", ResourceType = typeof(StringDictionary.Model))]
+        [Required()]
+        public CommentStateEnum CommentState { get; set; }
         //________________________________________________________________________________
         [Display(Name = "ApplicationPublishId", ResourceType = typeof(StringDictionary.Model))]
         [Required()]

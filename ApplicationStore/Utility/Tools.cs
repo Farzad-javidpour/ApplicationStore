@@ -19,7 +19,7 @@ namespace ApplicationStore.Utility
             return imgDataURL;
         }
 
-        public static string GetCurrenyUserId(ClaimsPrincipal claimsPrincipal)
+        public static string GetCurrentUserId(ClaimsPrincipal claimsPrincipal)
         {
             var claimsIdentity = (ClaimsIdentity)claimsPrincipal.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);

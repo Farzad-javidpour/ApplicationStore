@@ -49,7 +49,7 @@ namespace ApplicationStore.Areas.Admin.Controllers
         //________________________________________________________________________________
         public IActionResult Create()
         {
-            ViewBag.UserId = Tools.GetCurrenyUserId(User);
+            ViewBag.UserId = Tools.GetCurrentUserId(User);
             return View();
         }
 
@@ -73,7 +73,7 @@ namespace ApplicationStore.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            ViewBag.UserId = Tools.GetCurrenyUserId(User);
+            ViewBag.UserId = Tools.GetCurrentUserId(User);
             var platform = await _context.Platforms
                 .Include(m => m.ApplicationStoreUser)
                 .SingleOrDefaultAsync(m => m.Id == id);

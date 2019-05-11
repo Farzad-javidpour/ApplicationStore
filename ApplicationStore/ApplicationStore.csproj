@@ -17,6 +17,7 @@
   <ItemGroup>
     <Reference Include="MyAssembly">
       <HintPath>bin\Debug\netcoreapp2.1\Persia.dll</HintPath>
+      <Private>true</Private>
     </Reference>
   </ItemGroup>
 

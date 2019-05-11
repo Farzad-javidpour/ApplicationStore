@@ -17,9 +17,11 @@ namespace ApplicationStore.Models
         [Required(ErrorMessageResourceName = "IsLike", ErrorMessageResourceType = typeof(StringDictionary.Model))]
         public bool IsLike { get; set; }
         //________________________________________________________________________________
-        [Display(Name = "Count", ResourceType = typeof(StringDictionary.Model))]
-        [Required(ErrorMessageResourceName = "Count", ErrorMessageResourceType = typeof(StringDictionary.Model))]
-        public double Count { get; set; }
+        [Display(Name = "ApplicationStoreUserId", ResourceType = typeof(StringDictionary.Model))]
+        [Required()]
+        public string ApplicationStoreUserId { get; set; }
+        [ForeignKey("ApplicationStoreUserId")]
+        public virtual ApplicationStoreUser ApplicationStoreUser { get; set; }
         //________________________________________________________________________________
         [Display(Name = "CommentId", ResourceType = typeof(StringDictionary.Model))]
         [Required()]

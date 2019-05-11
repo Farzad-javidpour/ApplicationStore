@@ -12,17 +12,39 @@
                         </h4>
                     </div>
 
-                    <img class="card-img-top" style="height:100%;" src="@appPublish.PictureUrl" alt="App Image" />
+                    <img class="card-img-top" width="200px" height="200px" src="@appPublish.PictureUrl" alt="App Image" />
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <label style="font-size:20px; color:#a51313"><b>@appPublish.ApplicationPublish.Price ریال</b></label>
                             </div>
                             <a asp-action="Details" asp-controller="Home" class="btn btn-success fa-pull-right btn-outline-info" asp-route-id="@appPublish.ApplicationPublish.Id">مشاهده جزئیات</a>
+                            @if (appPublish.IsFavorite && appPublish.ShowIcon)
+                            {
+
+                                <img class="fas fa-heart fa-2x" style="color:teal" onclick=RemoveFavorite(@appPublish.ApplicationPublish.Id) width="50px" height="50px"/>
+                            }
+                            @if (!appPublish.IsFavorite && appPublish.ShowIcon)
+                            {
+                                <img class="fal fa-heart fa-2x" onclick=AddToFavorite(@appPublish.ApplicationPublish.Id) width="50px" height="50px" />
+                            }
                         </div>
                     </div>
                 </div>
             </div>
         }
     </div>
+   
 </div>
+<script type="text/javascript">
+    function AddToFavorite(id)
+    {
+        window.location.href ="@Url.Action("Favorite", "Home")?id="+ id;
+    }
+    function RemoveFavorite(id)
+    {
+        window.location.href ="@Url.Action("RemoveFavorite", "Home")?id=" + id;
+    }
+</script>
+
+

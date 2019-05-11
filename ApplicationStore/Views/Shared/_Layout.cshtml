@@ -30,26 +30,31 @@
 
                 <li class="nav-item"><a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">خانه</a></li>
 
-
                 @if (User.IsInRole(@ApplicationStore.Utility.StaticInfo.SuperAdminUser))
                 {
-                    <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="Platforms" asp-action="Index">پلتفرم</a></li>
+                    <li class="nav-item"><a class="nav-link " asp-area="admin" asp-controller="Platforms" asp-action="Index">پلتفرم</a></li>
                     <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="ApplicationCategories" asp-action="Index">گروه نرم افزار</a></li>
                     <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="Applications" asp-action="Index">نرم افزار</a></li>
                     <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="ApplicationPublishes" asp-action="Index">نسخه های نرم افزار</a></li>
                     <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="AdminUsers" asp-action="Index">کاربران</a></li>
                     <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="Comments" asp-action="Index">کامنت ها</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="FavoriteList"> علاقه مندی ها </a></li>
                 }
+                @if (User.IsInRole(@ApplicationStore.Utility.StaticInfo.MemberUser))
+                {
+                    <li class="nav-item"><a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="FavoriteList"> علاقه مندی ها </a></li>
+                }
+
             </ul>
 
             <ul class="navbar-nav mr-auto">
                 <partial name="_LoginPartial.cshtml" />
             </ul>
 
-            <form class="form-inline my-2 my-lg-0">
+            @*<form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+            </form>*@
         </div>
     </nav>
 

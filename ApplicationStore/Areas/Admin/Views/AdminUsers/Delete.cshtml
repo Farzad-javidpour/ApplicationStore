@@ -4,9 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Delete/Disable</h2>
-
-<h4>Admin Users</h4>
+<h4 class="text-primary p-md-3" >حذف کاربر</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -28,13 +26,13 @@
                 <input asp-for="Email" class="form-control" readonly />
             </div>
             <div class="form-group">
-                <input type="submit" value="Delete" class="btn btn-default" />
+                <input type="submit" value="حذف" class="btn btn-danger" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn-outline-secondary"><i class="far fa-chevron-right"></i>&nbsp;بازگشت</a>
 </div>
 

@@ -164,6 +164,8 @@ namespace ApplicationStore.Data.Migrations
                     b.Property<string>("ApplicationStoreUserId")
                         .IsRequired();
 
+                    b.Property<DateTime>("RegisterDate");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasMaxLength(100);
@@ -183,13 +185,16 @@ namespace ApplicationStore.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CommentId");
+                    b.Property<string>("ApplicationStoreUserId")
+                        .IsRequired();
 
-                    b.Property<double>("Count");
+                    b.Property<int>("CommentId");
 
                     b.Property<bool>("IsLike");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationStoreUserId");
 
                     b.HasIndex("CommentId");
 
@@ -505,6 +510,11 @@ namespace ApplicationStore.Data.Migrations
 
             modelBuilder.Entity("ApplicationStore.Models.CommentLike", b =>
                 {
+                    b.HasOne("ApplicationStore.Models.ApplicationStoreUser", "ApplicationStoreUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationStoreUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("ApplicationStore.Models.Comment", "Comment")
                         .WithMany()
                         .HasForeignKey("CommentId")

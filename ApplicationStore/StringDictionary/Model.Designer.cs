@@ -124,6 +124,15 @@ namespace ApplicationStore.StringDictionary {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to وضعیت کامنت.
+        /// </summary>
+        public static string CommentState {
+            get {
+                return ResourceManager.GetString("CommentState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تعداد.
         /// </summary>
         public static string Count {
