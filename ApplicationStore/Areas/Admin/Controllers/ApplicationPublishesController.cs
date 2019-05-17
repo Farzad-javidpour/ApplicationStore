@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using ApplicationStore.Utility;
+using System.Net.Mail;
+using System.Net;
 
 namespace ApplicationStore.Areas.Admin.Controllers
 {
@@ -97,7 +99,6 @@ namespace ApplicationStore.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePost()
         {
-
             if (ModelState.IsValid)
             {
                 var files = HttpContext.Request.Form.Files;
@@ -160,12 +161,39 @@ namespace ApplicationStore.Areas.Admin.Controllers
                 }
                 //--------------------------------------------------------
 
+                //Send Email To User Download This Application
+
+                var downlodedApplication = _context.DownloadApplications
+             .Include(d => d.ApplicationPublish)
+             .ThenInclude(a => a.Application)
+             .Where(d => d.ApplicationPublish.Application.Id == ApplicationPublishVM.ApplicationPublish.ApplicationId);
+                foreach (var item in downlodedApplication)
+                {
+                    var EmailAddress = Tools.GetCurrentUserEmail(User);
+                    var smtpClient = new SmtpClient
+                    {
+                        Host = "smtp.gmail.com", // set your SMTP server name here
+                        Port = 587, // Port 
+                        EnableSsl = true,
+                        Credentials = new NetworkCredential("yelpapplicationserver@gmail.com", "96242369iust")
+                    };
+
+                    using (var message = new MailMessage("yelpapplicationserver@gmail.com", EmailAddress)
+                    {
+                        Subject = "نسخه جدید نرم افزار",
+                        Body = string.Format("Hello dear user ,add new version of {0} to application list", item.ApplicationPublish.Application.Title)
+                    })
+                    {
+                        await smtpClient.SendMailAsync(message);
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
 
             ApplicationPublishVM.Applications = _context.Applications.ToList();
             ApplicationPublishVM.Platforms = _context.Platforms.ToList();
 
+         
             return View(ApplicationPublishVM);
         }
         //________________________________________________________________________________

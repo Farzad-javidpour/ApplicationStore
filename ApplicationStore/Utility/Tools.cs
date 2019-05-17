@@ -25,5 +25,12 @@ namespace ApplicationStore.Utility
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             return claim.Value;
         }
+
+        public static string GetCurrentUserEmail(ClaimsPrincipal claimsPrincipal)
+        {
+            var claimsIdentity = (ClaimsIdentity)claimsPrincipal.Identity;
+            return  claimsIdentity.Name;
+          
+        }
     }
 }

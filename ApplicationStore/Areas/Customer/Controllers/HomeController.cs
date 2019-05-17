@@ -65,7 +65,7 @@ namespace ApplicationStore.Controllers
                                     await _context.FavorieApplications
                                      .AnyAsync(f => f.ApplicationPublishId == item.Id && f.ApplicationStoreUserId == Tools.GetCurrentUserId(User))
                                      : false,
-                      
+
 
                     });
             }
@@ -266,7 +266,7 @@ namespace ApplicationStore.Controllers
                         PictureUrl = Utility.Tools.GetImageUrlFromByteArray(_context.ApplicationPictures.FirstOrDefault(p => p.ApplicationPublishId == item.Id).Data),
                         ShowIcon = true,
                         IsFavorite = true,
-                      
+
 
                     });
             }
@@ -274,7 +274,7 @@ namespace ApplicationStore.Controllers
             return this.View(@"../Home/Index", applicationPublishVMList);
         }
 
-        //_________________________________________________________________
+        //________________________________________________________________________________
 
         public IActionResult About()
         {
@@ -306,7 +306,7 @@ namespace ApplicationStore.Controllers
         [HttpPost]
         public async Task<IActionResult> Search(string searchText)
         {
-            if(string.IsNullOrEmpty(searchText) || searchText==null)  return  RedirectToAction(nameof(Index));
+            if (string.IsNullOrEmpty(searchText) || searchText == null) return RedirectToAction(nameof(Index));
 
             var searchList = _context.ApplicationPublishs
                 .Include(a => a.Application)
@@ -336,7 +336,7 @@ namespace ApplicationStore.Controllers
                                     await _context.FavorieApplications
                                      .AnyAsync(f => f.ApplicationPublishId == item.Id && f.ApplicationStoreUserId == Tools.GetCurrentUserId(User))
                                      : false,
-                      
+
 
                     });
             }
@@ -346,21 +346,27 @@ namespace ApplicationStore.Controllers
 
         //________________________________________________________________________________
 
-           
+
         public async Task<IActionResult> Download(int id)
         {
             if (id <= 0) return this.NotFound();
             var UserId = Tools.GetCurrentUserId(User);
             var applicationPublish = await _context.ApplicationPublishs
-                .Include(a=>a.Application)
+                .Include(a => a.Application)
                 .FirstOrDefaultAsync(a => a.Id == id);
+            if (applicationPublish == null) return this.NotFound();
 
-            var applicationDownload = new Models.DownloadApplication();
-            applicationDownload.ApplicationStoreUserId = UserId;
-            applicationDownload.RegisterDate = DateTime.Now.Date;
-            applicationDownload.ApplicationPublishId = id;
-            _context.DownloadApplications.Add(applicationDownload);
-            await _context.SaveChangesAsync();
+            var applicationDownload = await _context.DownloadApplications
+                .FirstOrDefaultAsync(u => u.ApplicationStoreUserId == Tools.GetCurrentUserId(User) && u.ApplicationPublishId == id);
+            if (applicationDownload == null)
+            {
+                applicationDownload.ApplicationStoreUserId = UserId;
+                applicationDownload.RegisterDate = DateTime.Now.Date;
+                applicationDownload.ApplicationPublishId = id;
+                _context.DownloadApplications.Add(applicationDownload);
+                await _context.SaveChangesAsync();
+            }
+
 
             var webRootPath = _hostingEnvironment.WebRootPath;
             var uploadApp = Path.Combine(webRootPath, "ApplicationFiles");
@@ -398,6 +404,73 @@ namespace ApplicationStore.Controllers
             return this.View(@"../Home/Index", applicationPublishVMList);
         }
 
-        //_________________________________________________________________
+        //__________________________________________________________________________________
+
+        public async Task<IActionResult> SuggestList()
+        {
+            var SuggestViewModel = new SuggestViewModel();
+            SuggestViewModel.SuggestByDownload = new List<ApplicationPublishViewModel>();
+            SuggestViewModel.SuggestBySize = new List<ApplicationPublishViewModel>();
+
+            var download = _context.DownloadApplications
+             .Include(a => a.ApplicationPublish)
+            .GroupBy(s => s.ApplicationPublishId, (k, g) => g
+            .Select(s => new { MaxApp = g.Max(s2 => s2.ApplicationPublishId), App = s }))
+            .SelectMany(s => s)
+            .OrderBy(s => s.MaxApp)
+            .Select(s => s.App.ApplicationPublishId)
+            .Skip(0)
+            .Take(5).Distinct();
+
+            foreach (var item in await _context.ApplicationPublishs.Where(p => download.Contains(p.Id)).Include(m => m.Application).Include(m => m.Platform).ToListAsync())
+            {
+                SuggestViewModel.SuggestByDownload.Add(
+                    new ApplicationPublishViewModel()
+                    {
+                        ApplicationPublish = item,
+                        RegisterDateShamsi = Persia.Calendar.ConvertToPersian(item.RegisterDate).ToString(),
+                        PublishDateShamsi = Persia.Calendar.ConvertToPersian(item.PublishDate).ToString(),
+                        PictureUrl = Utility.Tools.GetImageUrlFromByteArray(_context.ApplicationPictures.FirstOrDefault(p => p.ApplicationPublishId == item.Id).Data),
+                        ShowIcon = true,
+                        IsFavorite = !string.IsNullOrEmpty(this.User.Identity.Name) ?
+                                    await _context.FavorieApplications
+                                     .AnyAsync(f => f.ApplicationPublishId == item.Id && f.ApplicationStoreUserId == Tools.GetCurrentUserId(User))
+                                     : false,
+
+
+                    });
+            }
+
+            var size = _context.ApplicationPublishs
+           .GroupBy(s => s.Size, (k, g) => g
+           .Select(s => new { MinSize = g.Min(s2 => s2.Size), App = s }))
+           .SelectMany(s => s)
+           .OrderBy(s => s.MinSize)
+           .Select(s => s.App.Id)
+           .Skip(0)
+           .Take(5);
+
+
+            foreach (var item in await _context.ApplicationPublishs.Where(p => size.Contains(p.Id)).Include(m => m.Application).Include(m => m.Platform).ToListAsync())
+            {
+                SuggestViewModel.SuggestBySize.Add(
+                    new ApplicationPublishViewModel()
+                    {
+                        ApplicationPublish = item,
+                        RegisterDateShamsi = Persia.Calendar.ConvertToPersian(item.RegisterDate).ToString(),
+                        PublishDateShamsi = Persia.Calendar.ConvertToPersian(item.PublishDate).ToString(),
+                        PictureUrl = Utility.Tools.GetImageUrlFromByteArray(_context.ApplicationPictures.FirstOrDefault(p => p.ApplicationPublishId == item.Id).Data),
+                        ShowIcon = true,
+                        IsFavorite = !string.IsNullOrEmpty(this.User.Identity.Name) ?
+                                    await _context.FavorieApplications
+                                     .AnyAsync(f => f.ApplicationPublishId == item.Id && f.ApplicationStoreUserId == Tools.GetCurrentUserId(User))
+                                     : false,
+
+
+                    });
+            }
+            this.ViewBag.ShowReturn = true;
+            return this.View(SuggestViewModel);
+        }
     }
 }
