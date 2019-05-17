@@ -16,7 +16,17 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <label style="font-size:20px; color:#a51313"><b>@appPublish.ApplicationPublish.Price ریال</b></label>
+                                <label style="font-size:20px; color:#a51313">
+                                    @if (@appPublish.ApplicationPublish.Price.HasValue)
+                                    {
+                                        <b>@appPublish.ApplicationPublish.Price ریال</b>
+                                    }
+                                    else
+                                    {
+                                        <b>رایگان </b>
+                                    }
+
+                                </label>
                             </div>
                             <a asp-action="Details" asp-controller="Home" class="btn btn-success fa-pull-right btn-outline-info" asp-route-id="@appPublish.ApplicationPublish.Id">مشاهده جزئیات</a>
                             @if (appPublish.IsFavorite && appPublish.ShowIcon)

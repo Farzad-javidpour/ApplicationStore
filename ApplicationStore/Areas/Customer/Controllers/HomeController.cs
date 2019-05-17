@@ -10,6 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using ApplicationStore.Models;
 using ApplicationStore.Utility;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Hosting.Internal;
 
 namespace ApplicationStore.Controllers
 {
@@ -17,6 +20,7 @@ namespace ApplicationStore.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly HostingEnvironment _hostingEnvironment;
 
         [BindProperty]
         public ApplicationPublishViewModel ApplicationPublishVM { get; set; }
@@ -24,9 +28,10 @@ namespace ApplicationStore.Controllers
         [BindProperty]
         public CommentViewModel CommentVM { get; set; }
         //________________________________________________________________________________
-        public HomeController(ApplicationDbContext context)
+        public HomeController(ApplicationDbContext context, HostingEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
 
             ApplicationPublishVM = new ApplicationPublishViewModel()
             {
@@ -95,7 +100,7 @@ namespace ApplicationStore.Controllers
             ApplicationPublishVM.RegisterDateShamsi = Persia.Calendar.ConvertToPersian(applicationPublish.RegisterDate).ToString();
             ApplicationPublishVM.PublishDateShamsi = Persia.Calendar.ConvertToPersian(applicationPublish.PublishDate).ToString();
             ApplicationPublishVM.PictureUrl = Tools.GetImageUrlFromByteArray(_context.ApplicationPictures.FirstOrDefault(p => p.ApplicationPublishId == applicationPublish.Id).Data);
-
+            this.ViewBag.HasUserId = !string.IsNullOrEmpty(this.User.Identity.Name);
             return View(ApplicationPublishVM);
         }
 
@@ -338,5 +343,61 @@ namespace ApplicationStore.Controllers
             this.ViewBag.ShowReturn = true;
             return this.View(@"../Home/Index", applicationPublishVMList);
         }
+
+        //________________________________________________________________________________
+
+           
+        public async Task<IActionResult> Download(int id)
+        {
+            if (id <= 0) return this.NotFound();
+            var UserId = Tools.GetCurrentUserId(User);
+            var applicationPublish = await _context.ApplicationPublishs
+                .Include(a=>a.Application)
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            var applicationDownload = new Models.DownloadApplication();
+            applicationDownload.ApplicationStoreUserId = UserId;
+            applicationDownload.RegisterDate = DateTime.Now.Date;
+            applicationDownload.ApplicationPublishId = id;
+            _context.DownloadApplications.Add(applicationDownload);
+            await _context.SaveChangesAsync();
+
+            var webRootPath = _hostingEnvironment.WebRootPath;
+            var uploadApp = Path.Combine(webRootPath, "ApplicationFiles");
+            IFileProvider provider = new PhysicalFileProvider(uploadApp);
+            IFileInfo fileInfo = provider.GetFileInfo(id + applicationPublish.Extension);
+            return File(fileInfo.CreateReadStream(), "application/andrew-inset", applicationPublish.Application.Title + applicationPublish.Extension);
+        }
+
+        //________________________________________________________________________________
+        public async Task<IActionResult> DownloadList()
+        {
+            var downloadList = _context.DownloadApplications
+                .Where(c => c.ApplicationStoreUserId == Tools.GetCurrentUserId(User))
+                .Select(c => c.ApplicationPublishId);
+            var applicationPublishVMList = new List<ApplicationPublishViewModel>();
+            foreach (var item in await _context.ApplicationPublishs.Where(p => downloadList.Contains(p.Id)).Include(m => m.Application).Include(m => m.Platform).ToListAsync())
+            {
+                applicationPublishVMList.Add(
+                    new ApplicationPublishViewModel()
+                    {
+                        ApplicationPublish = item,
+                        RegisterDateShamsi = Persia.Calendar.ConvertToPersian(item.RegisterDate).ToString(),
+                        PublishDateShamsi = Persia.Calendar.ConvertToPersian(item.PublishDate).ToString(),
+                        PictureUrl = Utility.Tools.GetImageUrlFromByteArray(_context.ApplicationPictures.FirstOrDefault(p => p.ApplicationPublishId == item.Id).Data),
+                        ShowIcon = true,
+                        IsFavorite = !string.IsNullOrEmpty(this.User.Identity.Name) ?
+                                    await _context.FavorieApplications
+                                     .AnyAsync(f => f.ApplicationPublishId == item.Id && f.ApplicationStoreUserId == Tools.GetCurrentUserId(User))
+                                     : false,
+
+
+                    });
+            }
+            this.ViewBag.ShowReturn = true;
+            return this.View(@"../Home/Index", applicationPublishVMList);
+        }
+
+        //_________________________________________________________________
     }
 }

@@ -48,7 +48,13 @@
     </div>
     <div class="col-4">
         <img class="card-img-top" src="@Model.PictureUrl" alt="App Image" />
+        @if ((bool)this.ViewBag.HasUserId)
+        {
+            <a asp-action="Download" asp-controller="Home" class="btn btn-success fa-pull-right btn-outline-info" asp-route-id="@Model.ApplicationPublish.Id">دانلود</a>
+
+        }
     </div>
+
 </div>
 
 <div>
