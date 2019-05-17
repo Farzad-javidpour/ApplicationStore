@@ -22,7 +22,7 @@
                             @if (appPublish.IsFavorite && appPublish.ShowIcon)
                             {
 
-                                <img class="fas fa-heart fa-2x" style="color:teal" onclick=RemoveFavorite(@appPublish.ApplicationPublish.Id) width="50px" height="50px"/>
+                                <img class="fas fa-heart fa-2x" style="color:teal" onclick=RemoveFavorite(@appPublish.ApplicationPublish.Id) width="50px" height="50px" />
                             }
                             @if (!appPublish.IsFavorite && appPublish.ShowIcon)
                             {
@@ -34,7 +34,14 @@
             </div>
         }
     </div>
-   
+
+    @if ((bool)this.ViewBag.ShowReturn)
+    {
+        <div>
+            <a asp-action="Index" class="btn-outline-secondary"><i class="far fa-chevron-right"></i>&nbsp;بازگشت</a>
+        </div>
+    }
+
 </div>
 <script type="text/javascript">
     function AddToFavorite(id)

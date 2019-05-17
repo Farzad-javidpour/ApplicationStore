@@ -22,20 +22,27 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" asp-area="customer" asp-controller="Home" asp-action="Index">AppStore</a>
-
         <div class="collapse navbar-collapse">
 
+
             <ul class="navbar-nav mr-auto">
+
 
                 <li class="nav-item"><a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">خانه</a></li>
 
                 @if (User.IsInRole(@ApplicationStore.Utility.StaticInfo.SuperAdminUser))
                 {
                     <li class="nav-item"><a class="nav-link " asp-area="admin" asp-controller="Platforms" asp-action="Index">پلتفرم</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="ApplicationCategories" asp-action="Index">گروه نرم افزار</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="Applications" asp-action="Index">نرم افزار</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="ApplicationPublishes" asp-action="Index">نسخه های نرم افزار</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="" data-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false">نرم افزار</a>
+                        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" asp-area="admin" asp-controller="ApplicationCategories" asp-action="Index">گروه نرم افزار</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="Applications" asp-action="Index">نرم افزار</a>
+                            <a class="dropdown-item" asp-area="admin" asp-controller="ApplicationPublishes" asp-action="Index">نسخه های نرم افزار</a>
+                        </div>
+                    </li>
+
                     <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="AdminUsers" asp-action="Index">کاربران</a></li>
                     <li class="nav-item"><a class="nav-link" asp-area="admin" asp-controller="Comments" asp-action="Index">کامنت ها</a></li>
                     <li class="nav-item"><a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="FavoriteList"> علاقه مندی ها </a></li>
@@ -46,18 +53,22 @@
                 }
 
             </ul>
-
             <ul class="navbar-nav mr-auto">
                 <partial name="_LoginPartial.cshtml" />
             </ul>
-
-            @*<form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>*@
         </div>
-    </nav>
+        <form class="form-inline my-2 my-lg-0"  asp-controller="Home"  asp-action="Search"  asp-area="Customer" method="post" > 
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search this application" name="searchText" id="searchText">
+                <div class="input-group-append">
+                    <button  type="submit">
+                        <i class="fas fa-search text-white "></i>
+                    </button>
 
+                </div>
+            </div>
+        </form>
+    </nav>
     <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">

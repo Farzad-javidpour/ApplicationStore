@@ -60,10 +60,11 @@ namespace ApplicationStore.Controllers
                                     await _context.FavorieApplications
                                      .AnyAsync(f => f.ApplicationPublishId == item.Id && f.ApplicationStoreUserId == Tools.GetCurrentUserId(User))
                                      : false,
+                      
 
                     });
             }
-
+            this.ViewBag.ShowReturn = false;
             return View(applicationPublishVMList);
         }
         //________________________________________________________________________________
@@ -226,7 +227,7 @@ namespace ApplicationStore.Controllers
             _context.FavorieApplications.Add(favorite);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-                                      
+
         }
 
         //________________________________________________________________________________
@@ -235,7 +236,7 @@ namespace ApplicationStore.Controllers
         {
             var favorite = await _context.FavorieApplications
                 .FirstOrDefaultAsync(c => c.ApplicationPublishId == id && c.ApplicationStoreUserId == Tools.GetCurrentUserId(User));
-           
+
             _context.FavorieApplications.Remove(favorite);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -247,9 +248,9 @@ namespace ApplicationStore.Controllers
         {
             var favoriteList = _context.FavorieApplications
                 .Where(c => c.ApplicationStoreUserId == Tools.GetCurrentUserId(User))
-                .Select(c=>c.ApplicationPublishId);
+                .Select(c => c.ApplicationPublishId);
             var applicationPublishVMList = new List<ApplicationPublishViewModel>();
-            foreach (var item in await _context.ApplicationPublishs.Where(p=>favoriteList.Contains(p.Id)).Include(m => m.Application).Include(m => m.Platform).ToListAsync())
+            foreach (var item in await _context.ApplicationPublishs.Where(p => favoriteList.Contains(p.Id)).Include(m => m.Application).Include(m => m.Platform).ToListAsync())
             {
                 applicationPublishVMList.Add(
                     new ApplicationPublishViewModel()
@@ -258,14 +259,18 @@ namespace ApplicationStore.Controllers
                         RegisterDateShamsi = Persia.Calendar.ConvertToPersian(item.RegisterDate).ToString(),
                         PublishDateShamsi = Persia.Calendar.ConvertToPersian(item.PublishDate).ToString(),
                         PictureUrl = Utility.Tools.GetImageUrlFromByteArray(_context.ApplicationPictures.FirstOrDefault(p => p.ApplicationPublishId == item.Id).Data),
-                        ShowIcon =true,
-                        IsFavorite =true
+                        ShowIcon = true,
+                        IsFavorite = true,
+                      
 
                     });
             }
-
+            this.ViewBag.ShowReturn = true;
             return this.View(@"../Home/Index", applicationPublishVMList);
         }
+
+        //_________________________________________________________________
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -289,6 +294,49 @@ namespace ApplicationStore.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        //_______________________________________________________________________________
+
+        [HttpPost]
+        public async Task<IActionResult> Search(string searchText)
+        {
+            if(string.IsNullOrEmpty(searchText) || searchText==null)  return  RedirectToAction(nameof(Index));
+
+            var searchList = _context.ApplicationPublishs
+                .Include(a => a.Application)
+                .ThenInclude(a => a.ApplicationCategory)
+                .Where(
+                c => c.ChangeList.Contains(searchText) ||
+                c.Version.Contains(searchText) ||
+                c.Application.Code.Contains(searchText) ||
+                c.Application.Title.Contains(searchText) ||
+                c.Application.ApplicationCategory.Title.Contains(searchText) ||
+                c.Application.ApplicationCategory.Description.Contains(searchText)
+                );
+
+
+            var applicationPublishVMList = new List<ApplicationPublishViewModel>();
+            foreach (var item in await searchList.ToListAsync())
+            {
+                applicationPublishVMList.Add(
+                    new ApplicationPublishViewModel()
+                    {
+                        ApplicationPublish = item,
+                        RegisterDateShamsi = Persia.Calendar.ConvertToPersian(item.RegisterDate).ToString(),
+                        PublishDateShamsi = Persia.Calendar.ConvertToPersian(item.PublishDate).ToString(),
+                        PictureUrl = Utility.Tools.GetImageUrlFromByteArray(_context.ApplicationPictures.FirstOrDefault(p => p.ApplicationPublishId == item.Id).Data),
+                        ShowIcon = !string.IsNullOrEmpty(this.User.Identity.Name),
+                        IsFavorite = !string.IsNullOrEmpty(this.User.Identity.Name) ?
+                                    await _context.FavorieApplications
+                                     .AnyAsync(f => f.ApplicationPublishId == item.Id && f.ApplicationStoreUserId == Tools.GetCurrentUserId(User))
+                                     : false,
+                      
+
+                    });
+            }
+            this.ViewBag.ShowReturn = true;
+            return this.View(@"../Home/Index", applicationPublishVMList);
         }
     }
 }
